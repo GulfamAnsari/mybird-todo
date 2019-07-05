@@ -5,47 +5,38 @@ import Task from './components/tasks/Task';
 import Footer from './components/footer/Footer';
 import AddTask from './components/add-task/AddTask';
 import CompletedTask from './components/completed-task/CompletedTask';
+import Axios from 'axios';
 
 export default class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      tasks: [
-        {
-          title: 'Learn React',
-          description: 'Build great modularize javascript apps with React JS',
-          priority: 'High',
-          completed: true
-        },
-        {
-          title: 'Learn Angular',
-          description: 'Build great modularize javascript apps with React JS',
-          priority: 'High',
-          completed: false
-        },
-        {
-          title: 'Learn React Native',
-          description: 'Build great modularize javascript apps with React JS',
-          priority: 'Medium',
-          completed: true
-        },
-        {
-          title: 'Learn Android',
-          description: 'Build great modularize javascript apps with React JS',
-          priority: 'Low',
-          completed: false
-        },
-        {
-          title: 'Learn Node',
-          description: 'Build great modularize javascript apps with React JS',
-          priority: 'Medium',
-          completed: false
-        }
-      ],
+      tasks: [],
       openNewTodo: false
     }
   }
+
+  componentDidMount = () => {
+    Axios.get('/posts').then((response) => {
+      const updatedResponse = response.data.slice(1, 10);
+      const tasks = [];
+      updatedResponse.map((result, index) => {
+        const priority = ['Medium', 'High', 'Medium', 'High', 'Low', 'Medium', 'High', 'Low', 'Medium', 'High'];
+        const completed = [true, false, true, true, false, true, false, false, false, false];
+        tasks.push({
+          title: result.title,
+          description: result.body,
+          completed: completed[index],
+          priority: priority[index]
+        });
+      });
+      this.setState({
+        tasks: tasks
+      })
+    });
+  };
+
 
   updateTaskState(tasks) {
     this.setState({
