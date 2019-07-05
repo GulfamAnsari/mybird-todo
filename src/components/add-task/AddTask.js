@@ -1,10 +1,17 @@
 import React from 'react';
 import './AddTask.css';
 
-export default function AddTask({ openNewTodo, toggleTodoHandler}) {
+export default function AddTask({ openNewTodo, toggleTodoHandler, addNewTodoHandler}) {
 
     function onSubmitHandler(event) {
-        console.log(event);
+        event.preventDefault();
+        var formElement = document.getElementById("todoForm").elements;
+        const data = {
+            title: formElement[0].value,
+            description: formElement[1].value,
+            priority: formElement[2].value 
+        }
+        addNewTodoHandler(data);
     }
 
     return (
@@ -17,17 +24,17 @@ export default function AddTask({ openNewTodo, toggleTodoHandler}) {
                     <form role="form" id="todoForm" onSubmit={onSubmitHandler}>
                         <div className="row">
                             <label htmlFor="title"> Title </label>
-                            <input className="form-input" id="title" type="text" placeholder="Learn JavaScript" />
+                            <input className="form-input" name="title" id="title" type="text" placeholder="Learn JavaScript" />
                         </div>
                         <div className="row">
                             <label htmlFor="description"> Description </label>
-                            <textarea id="description" rows="4" cols="30" placeholder="Coz you already know Java"></textarea>
+                            <textarea id="description" name="description" rows="4" cols="30" placeholder="Coz you already know Java"></textarea>
                         </div>
                         <div className="row">
                             <label htmlFor="priority"> Priority </label>
-                            <select id="priority">
+                            <select id="priority" name="priority">
                                 <option value="high">High</option>
-                                <option value="med">Medium</option>
+                                <option value="medium">Medium</option>
                                 <option value="low">Low</option>
                             </select>
                         </div>

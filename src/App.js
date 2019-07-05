@@ -47,14 +47,41 @@ export default class App extends Component {
     }
   }
 
-  toggleTodoHandler(state) {
+  updateTaskState(tasks) {
     this.setState({
-      openNewTodo: state  
+      tasks: tasks
     });
   }
 
-  addNewTodoHandler() {
-    console.log('console.lo')
+  toggleTodoHandler(state) {
+    this.setState({
+      openNewTodo: state
+    });
+  }
+
+  addNewTodoHandler(data) {
+    const { tasks } = this.state;
+    tasks.push(data);
+    this.updateTaskState(tasks);
+    this.toggleTodoHandler(false);
+  }
+
+  deleteTaskHandler(index) {
+    const { tasks } = this.state;
+    tasks.splice(index, 1);
+    this.updateTaskState(tasks);
+  }
+
+  removeCompletedTaskHandler(index) {
+    const { tasks } = this.state;
+    tasks[index].completed = false;
+    this.updateTaskState(tasks);
+  }
+
+  addCompletedTaskHandler(index) {
+    const { tasks } = this.state;
+    tasks[index].completed = true;
+    this.updateTaskState(tasks);
   }
 
   render() {
@@ -77,7 +104,12 @@ export default class App extends Component {
                 tasks.map((task, index) => {
                   // setting index as  a key is not a good way
                   if (!task.completed) {
-                    return <Task task={task} key={index} />
+                    return <Task
+                      task={task}
+                      key={index}
+                      deleteTaskHandler={() => { this.deleteTaskHandler(index) }}
+                      addCompletedTaskHandler={() => { this.addCompletedTaskHandler(index) }}
+                    />
                   }
                 })
               }
@@ -93,7 +125,11 @@ export default class App extends Component {
               </li>
 
               {/* New Task creator form pop up */}
-              <AddTask openNewTodo={openNewTodo} toggleTodoHandler={this.toggleTodoHandler.bind(this)} />
+              <AddTask
+                openNewTodo={openNewTodo}
+                toggleTodoHandler={this.toggleTodoHandler.bind(this)}
+                addNewTodoHandler={this.addNewTodoHandler.bind(this)}
+              />
 
             </ul>
           </div>
@@ -105,7 +141,11 @@ export default class App extends Component {
               {
                 tasks.map((task, index) => {
                   if (task.completed) {
-                    return <CompletedTask completedTask={task} key={index} />
+                    return <CompletedTask
+                      completedTask={task}
+                      key={index}
+                      removeCompletedTaskHandler={this.removeCompletedTaskHandler.bind(this, index)}
+                    />
                   }
                 })
               }

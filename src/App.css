@@ -249,11 +249,11 @@ textarea {
   display: none;
 }
 
-.todo-item .todo-title:hover .icon-checkbox-outline {
-  display: none;
+.todo-item .icon-checkbox:hover .icon-checkbox-outline {
+  display: block;
 }
 
-.todo-item .todo-title:hover .icon-checkbox {
+.todo-item .icon-checkbox:hover .icon-checkbox {
   display: block;
 }
 
