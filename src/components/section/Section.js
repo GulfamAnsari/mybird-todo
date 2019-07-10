@@ -7,7 +7,6 @@ import Axios from 'axios';
 export default class Section extends Component {
 
     constructor(props) {
-        console.log('[Section.js] In construction and props is', props);
         super(props);
         this.state = {
             tasks: [],
@@ -15,32 +14,11 @@ export default class Section extends Component {
         }
     }
 
-    /****************** Life Cycle Method for Demo Purposes *******************************/
-    /**
-     * This lifecycle function called each time whenevr the component
-     * props or state changes and retutn something. This method execute
-     * after the construction()
-     */
-    static getDerivedStateFromProps(props, state) {
-        console.log('[Section.js] getDerivedStateFromProps and props, state is', props, state);
-        return state;
-    }
-
-    /**
-     * This lifecycle method called each time after the getderivedStateFromProps method
-     * The main purpose if this method is to cancle the updating process. 
-     * This method should return true or false only. True means accept
-     */
-    shouldComponentUpdate = (nextProps, nextState) => {
-        console.log('[Section.js] shouldComponentUpdate', nextProps, nextState);
-        return true;
-    };
-
-    /************************************************************************************/
-
     updateTaskState(tasks) {
-        this.setState({
-            tasks: tasks
+        // Use setState function argument as a function if your new state is dependent on
+        // prevous one else you should use object as argument
+        this.setState((prevState, props) => {
+            return { tasks: tasks };
         });
     }
 
@@ -76,7 +54,6 @@ export default class Section extends Component {
     }
 
     render() {
-        console.log('[Section.js] render');
         const { tasks, openNewTodo } = this.state;
 
         return (
@@ -139,14 +116,12 @@ export default class Section extends Component {
         )
     }
 
-    /****************** Life Cycle Method for Demo Purposes *******************************/
     /**
    * This Lifecycle function once when the component is created after the
    * render() method. So because it runs only once, you can do some request
    * to fetch the application data.
    */
     componentDidMount = () => {
-        console.log('[Section.js] componentDidMount');
         Axios.get('/posts').then((response) => {
             const updatedResponse = response.data.slice(1, 10);
             const tasks = [];
@@ -168,28 +143,4 @@ export default class Section extends Component {
         });
     };
 
-    /**
-     * This lifecycle method called each time after render() method. This method have access
-     * to DOM and can update the dom element.
-     */
-    getSnapshotBeforeUpdate(prevProp, prevState) {
-        console.log('[Section.js] getSnapshotBeforUpdate');
-        return { snap: 'snaplshot' }
-    }
-
-    /**
-     * This lifecycle method called each time after when something is updated
-     * in the state of the component
-     */
-    componentDidUpdate = (prop, state, snap) => {
-        console.log('[Section.js] componentDidUpdate', prop, state, snap)
-    }
-
-    /**
-     * This lifecycle method called once when the component is destroyed
-     */
-    componentWillUnmount = () => {
-        console.log('[Section.js] componentWillUnmount')
-    };
-    /************************************************************************************/
 }
