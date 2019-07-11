@@ -12,20 +12,19 @@ export default class App extends Component {
 
   constructor(props) {
     super(props);
-    const abc = [{ name: 'abc' }, { name: 'rtyu' }, { name: 'sdfgh' }];
   }
 
   render() {
     return (
-      <Scrol />
-      // <BrowserRouter>
-      //   <React.Fragment>
-      //     <Header />
-      //     <Route path="/" exact component={Login} />
-      //     <Route path="/todos" exact component={Section} />
-      //     <Footer />
-      //   </React.Fragment>
-      // </BrowserRouter>
+      <BrowserRouter>
+        <React.Fragment>
+          <Header />
+          <Route path="/" exact component={Login} />
+          <Route path="/todos" exact component={Section} />
+          <Route path="/scroll" exact component={Scrol} />
+          <Footer />
+        </React.Fragment>
+      </BrowserRouter>
     )
   }
 
