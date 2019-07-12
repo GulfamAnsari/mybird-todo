@@ -9,13 +9,16 @@ class Section extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      openNewTodo: false
+    }
   }
 
-  updateTaskState(tasks) {
+  toggleTodoHandler(value) {
     // Use setState function argument as a function if your new state is dependent on
     // prevous one else you should use object as argument
     this.setState((prevState, props) => {
-      return { tasks: tasks };
+      return { openNewTodo: value };
     });
   }
 
@@ -24,7 +27,7 @@ class Section extends Component {
     const { tasks } = this.props.taskState;
     tasks.push(data);
     this.props.updateTasks(tasks);
-    this.props.toggleTodoHandler(false);
+    this.toggleTodoHandler(false);
   }
 
   deleteTaskHandler(index) {
@@ -46,9 +49,8 @@ class Section extends Component {
   }
 
   render() {
-    const { tasks, openNewTodo } = this.props.taskState;
-
-    console.log(tasks)
+    const { tasks } = this.props.taskState;
+    const { openNewTodo } = this.state;
 
     return (
       <section className="todo-list-container">
@@ -72,7 +74,7 @@ class Section extends Component {
 
             {/* To add new todo task */}
             <li className="todo-item new">
-              <div className="card" onClick={() => this.props.toggleTodoHandler(true)}>
+              <div className="card" onClick={() => this.toggleTodoHandler(true)}>
                 <h3 className="todo-title"> <span className="action">
                   <i className="complete material-icons md-36 md-light">add_circle_outline</i>
                 </span>
@@ -83,7 +85,7 @@ class Section extends Component {
             {/* New Task creator form pop up */}
             <AddTask
               openNewTodo={openNewTodo}
-              toggleTodoHandler={this.props.toggleTodoHandler.bind(this)}
+              toggleTodoHandler={this.toggleTodoHandler.bind(this)}
               addNewTodoHandler={this.addNewTodoHandler.bind(this)}
             />
           </ul>
@@ -145,8 +147,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateTasks: (tasks) => dispatch({ type: 'updateTasks', value: tasks }),
-    toggleTodoHandler: (value) => dispatch({ type: 'toggleTodoHandler', value: value }),
+    updateTasks: (tasks) => dispatch({ type: 'UPDATE_TASK', value: tasks }),
   }
 }
 

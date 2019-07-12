@@ -1,7 +1,6 @@
 const initialState = {
   taskState: {
-    tasks: [],
-    openNewTodo: false
+    tasks: []
   },
   authState: {
     selectedForm: 'sign-in',
@@ -20,27 +19,19 @@ const initialState = {
 }
 
 const Reducer = (state = initialState, action) => {
-  if (action.type === 'updateTasks') {
-    const taskState = {
-      tasks: action.value,
-      openNewTodo: false
-    }
-    return {
-      ...state,
-      taskState: taskState
-    }
+  const taskState = {};
+  switch (action.type) {
+    case 'UPDATE_TASK':
+      taskState['tasks'] = action.value;
+      taskState['openNewTodo'] = false;
+      return {
+        ...state,
+        taskState: taskState
+      }
+
+    default:
+      return state;
   }
-  if (action.type === 'toggleTodoHandler') {
-    const taskState = {
-      ...state.taskState,
-      openNewTodo: action.value
-    }
-    return {
-      ...state,
-      taskState: taskState
-    }
-  }
-  return state;
 }
 
 export default Reducer;
