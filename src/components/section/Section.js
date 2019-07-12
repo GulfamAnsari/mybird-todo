@@ -3,15 +3,12 @@ import AddTask from '../add-task/AddTask';
 import CompletedTask from '../completed-task/CompletedTask';
 import Task from '../tasks/Task';
 import Axios from 'axios';
+import { connect } from 'react-redux';
 
-export default class Section extends Component {
+class Section extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            tasks: [],
-            openNewTodo: false
-        }
     }
 
     updateTaskState(tasks) {
@@ -22,39 +19,36 @@ export default class Section extends Component {
         });
     }
 
-    toggleTodoHandler(state) {
-        this.setState({
-            openNewTodo: state
-        });
-    }
 
     addNewTodoHandler(data) {
-        const { tasks } = this.state;
+        const { tasks } = this.props.taskState;
         tasks.push(data);
-        this.updateTaskState(tasks);
-        this.toggleTodoHandler(false);
+        this.props.updateTasks(tasks);
+        this.props.toggleTodoHandler(false);
     }
 
     deleteTaskHandler(index) {
-        const { tasks } = this.state;
+        const { tasks } = this.props.taskState;
         tasks.splice(index, 1);
-        this.updateTaskState(tasks);
+        this.props.updateTasks(tasks);
     }
 
     removeCompletedTaskHandler(index) {
-        const { tasks } = this.state;
+        const { tasks } = this.props.taskState;
         tasks[index].completed = false;
-        this.updateTaskState(tasks);
+        this.props.updateTasks(tasks);
     }
 
     addCompletedTaskHandler(index) {
-        const { tasks } = this.state;
+        const { tasks } = this.props.taskState;
         tasks[index].completed = true;
-        this.updateTaskState(tasks);
+        this.props.updateTasks(tasks);
     }
 
     render() {
-        const { tasks, openNewTodo } = this.state;
+        const { tasks, openNewTodo } = this.props.taskState;
+
+        console.log(tasks)
 
         return (
             <section className="todo-list-container">
@@ -78,7 +72,7 @@ export default class Section extends Component {
 
                         {/* To add new todo task */}
                         <li className="todo-item new">
-                            <div className="card" onClick={() => this.toggleTodoHandler(true)}>
+                            <div className="card" onClick={() => this.props.toggleTodoHandler(true)}>
                                 <h3 className="todo-title"> <span className="action">
                                     <i className="complete material-icons md-36 md-light">add_circle_outline</i>
                                 </span>
@@ -89,7 +83,7 @@ export default class Section extends Component {
                         {/* New Task creator form pop up */}
                         <AddTask
                             openNewTodo={openNewTodo}
-                            toggleTodoHandler={this.toggleTodoHandler.bind(this)}
+                            toggleTodoHandler={this.props.toggleTodoHandler.bind(this)}
                             addNewTodoHandler={this.addNewTodoHandler.bind(this)}
                         />
                     </ul>
@@ -137,10 +131,23 @@ export default class Section extends Component {
                     priority: priority[index]
                 });
             });
-            this.setState({
-                tasks: tasks
-            })
+            this.props.updateTasks(tasks);
         });
     };
 
 }
+
+const mapStateToProps = (state) => {
+    return {
+        taskState: state.taskState
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateTasks: (tasks) => dispatch({ type: 'updateTasks', value: tasks }),
+        toggleTodoHandler: (value) => dispatch({ type: 'toggleTodoHandler', value: value }),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Section);
