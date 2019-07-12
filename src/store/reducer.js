@@ -3,18 +3,7 @@ const initialState = {
     tasks: []
   },
   authState: {
-    selectedForm: 'sign-in',
-    signIn: {
-      username: '',
-      password: '',
-      remebmer: false
-    },
-    signUp: {
-      username: '',
-      password: '',
-      repeat: '',
-      email: ''
-    }
+    isAuthenticated: false
   }
 }
 

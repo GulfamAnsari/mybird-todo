@@ -5,8 +5,8 @@ import './App.css';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Section from './components/section/Section';
-import Login from './components/log-in/Login';
 import Scrol from './components/scrol/Scrol';
+import Home from './pages/home/Home';
 
 export default class App extends Component {
 
@@ -19,7 +19,7 @@ export default class App extends Component {
       <BrowserRouter>
         <React.Fragment>
           <Header />
-          <Route path="/" exact component={Login} />
+          <Route path="/" exact component={Home} />
           <Route path="/todos" exact component={Section} />
           <Route path="/scroll" exact component={Scrol} />
           <Footer />
