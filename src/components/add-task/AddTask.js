@@ -29,7 +29,7 @@ export default function AddTask({ openNewTodo, toggleTodoHandler, addNewTodoHand
           <form role="form" id="todoForm" onSubmit={onSubmitHandler}>
             <div className="row">
               <label htmlFor="title"> Title </label>
-              <input onChange={onChangeHandler} value={formData.title} className="form-input" name="title" id="title" type="text" placeholder="Learn JavaScript" />
+              <input onChange={onChangeHandler} className="form-input" name="title" id="title" type="text" placeholder="Learn JavaScript" />
             </div>
             <div className="row">
               <label htmlFor="description"> Description </label>

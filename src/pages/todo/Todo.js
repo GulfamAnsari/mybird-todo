@@ -4,6 +4,7 @@ import CompletedTask from '../../components/completed-task/CompletedTask';
 import Task from '../../components/tasks/Task';
 import Axios from 'axios';
 import { connect } from 'react-redux';
+import localForage from 'localforage';
 
 class Todo extends Component {
 
@@ -119,6 +120,12 @@ class Todo extends Component {
  */
   componentDidMount = () => {
     Axios.get('/posts').then((response) => {
+      localForage.getItem('tasks').then((data) => {
+        if (data) {
+          this.props.updateTasks(data.value);
+          return;
+        }
+      })
       const updatedResponse = response.data.slice(1, 10);
       const tasks = [];
       updatedResponse.map((result, index) => {
@@ -145,9 +152,17 @@ const mapStateToProps = (state) => {
   }
 }
 
+const storeResult = (res) => {
+  return dispatch => {
+    localForage.setItem('tasks', res).then((success) => {
+      dispatch(success);
+    });
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateTasks: (tasks) => dispatch({ type: 'UPDATE_TASK', value: tasks }),
+    updateTasks: (tasks) => dispatch(storeResult({ type: 'UPDATE_TASK', value: tasks })),
   }
 }
 
