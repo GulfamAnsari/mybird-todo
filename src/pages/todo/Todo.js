@@ -120,7 +120,7 @@ class Todo extends Component {
  * to fetch the application data.
  */
   componentDidMount = () => {
-    Axios.get('/posts').then((response) => {
+    Axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
       localForage.getItem('tasks').then((data) => {
         if (data) {
           this.props.updateTasks(data.value);
