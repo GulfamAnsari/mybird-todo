@@ -83,7 +83,7 @@ function authenticateUser(req, dbResult, res) {
     console.log('successfully login');
 
     const expiresIn = 24 * 60 * 60;
-    const accessToken = jwt.sign({ id: user.id }, SECRET_KEY, {
+    const accessToken = jwt.sign({ id: userInfo.id }, SECRET_KEY, {
       expiresIn: expiresIn
     });
 
