@@ -83,7 +83,7 @@ function authenticateUser(req, dbResult, res) {
     console.log('successfully login');
 
     const expiresIn = 24 * 60 * 60;
-    const accessToken = jwt.sign({ id: userInfo.id }, SECRET_KEY, {
+    const accessToken = jwt.sign(userInfo, SECRET_KEY, {
       expiresIn: expiresIn
     });
 
@@ -135,7 +135,7 @@ function writeIntoDabase(req, res, db) {
         if (err) throw err;
 
         const expiresIn = 24 * 60 * 60;
-        const accessToken = jwt.sign({ id: user._id }, SECRET_KEY, {
+        const accessToken = jwt.sign(user, SECRET_KEY, {
           expiresIn: expiresIn
         });
 
