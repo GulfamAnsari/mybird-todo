@@ -31,7 +31,9 @@ app.post('/login', (req, res) => {
   connectMongoDB(req, res);
 });
 
-app.post('/refresh', refresh);
+app.post('/refresh', (req, res) => {
+  refresh(req, res);
+});
 
 app.post('/signup', (req, res) => {
   connectMongoDB(req, res);
@@ -163,7 +165,7 @@ function addPaper(req, res, db) {
 }
 
 
-const refresh = (req, res) => {
+function refresh(req, res) {
   // (BEGIN) The code uptil this point is the same as the first part of the `welcome` route
   const token = req.cookies.token
 
