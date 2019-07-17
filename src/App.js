@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import Header from './components/header/Header';
@@ -19,9 +19,11 @@ export default class App extends Component {
       <BrowserRouter>
         <React.Fragment>
           <Header />
-          <Route path="/" exact component={Home} />
-          <Route path="/todos" exact component={Todo} />
-          <Route path="/scroll" exact component={Scrol} />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/todos" exact component={Todo} />
+            <Route path="/scroll" exact component={Scrol} />
+          </Switch>
           <Footer />
         </React.Fragment>
       </BrowserRouter>

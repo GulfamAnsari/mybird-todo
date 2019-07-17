@@ -5,6 +5,7 @@ import Task from '../../components/tasks/Task';
 import Axios from 'axios';
 import { connect } from 'react-redux';
 import localForage from 'localforage';
+import * as actions from '../../store/actions';
 
 class Todo extends Component {
 
@@ -152,17 +153,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const storeResult = (res) => {
-  return dispatch => {
-    localForage.setItem('tasks', res).then((success) => {
-      dispatch(success);
-    });
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateTasks: (tasks) => dispatch(storeResult({ type: 'UPDATE_TASK', value: tasks })),
+    updateTasks: (tasks) => dispatch(actions.updateTask(tasks)),
   }
 }
 

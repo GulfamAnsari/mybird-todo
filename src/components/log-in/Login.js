@@ -33,7 +33,7 @@ export default class Login extends Component {
     return (
       <form onSubmit={(event) => { onSubmitHandler(event, this.state) }} className="sign-in-htm">
         <div className="group">
-          <label htmlFor="user" className="label">Username</label>
+          <label htmlFor="user" className="label">Email</label>
           <input required onChange={this.signInOnChangeHandler.bind(this)} id="user" name="username" type="text" className="input" />
         </div>
         <div className="group">
