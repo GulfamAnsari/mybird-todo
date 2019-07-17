@@ -73,9 +73,8 @@ function fetchDatabaseResults(req, res, db) {
 
 function authenticateUser(req, dbResult, res) {
   var data = '';
-  console.log(dbResult)
   for (var i = 0; i < dbResult.length; i++) {
-    if (dbResult[i].email == req.body.email && dbResult[i].password == bcrypt.hashSync(req.body.password)) {
+    if (dbResult[i].email == req.body.email && bcrypt.compareSync(req.body.password, dbResult[i].password)) {
       data = dbResult[i];
     }
   }
