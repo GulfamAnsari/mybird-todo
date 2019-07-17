@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Login from '../../components/log-in/Login';
 import Signup from '../../components/sign-up/Signup';
+import Axios from 'axios';
 
 export default class Home extends Component {
 
@@ -20,7 +21,13 @@ export default class Home extends Component {
   onSubmitHandler(event, payload) {
     event.preventDefault();
     if (payload.name === 'sign-in') {
-      console.log(payload)
+      const data = {
+        email: payload.singIn.username,
+        password: payload.singIn.password,
+      }
+      Axios.post('/login', data, { 'Content-Type': 'application/json' }).then((result) => {
+        console.log(result);
+      })
     } else if (payload.name === 'sign-up') {
       console.log(payload)
     }
@@ -36,7 +43,7 @@ export default class Home extends Component {
             <input id="tab-2" type="radio" name="tab" className="sign-up" name="sign-up" checked={selectedForm === 'sign-up' ? true : false} onChange={this.formSelectionHanndler.bind(this)} /><label htmlFor="tab-2" className="tab">Sign Up</label>
             <div className="login-form">
               <Login onSubmitHandler={(event, payload) => { this.onSubmitHandler(event, payload) }} />
-              <Signup onSubmitHandler={(event, payload) => { this.onSubmitHandler(event, payload) }}  />
+              <Signup onSubmitHandler={(event, payload) => { this.onSubmitHandler(event, payload) }} />
             </div>
           </div>
         </div>
