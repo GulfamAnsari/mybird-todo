@@ -29,7 +29,15 @@ export default class Home extends Component {
         console.log(result);
       })
     } else if (payload.name === 'sign-up') {
-      console.log(payload)
+      const data = {
+        email: payload.signUp.email,
+        username: payload.signUp.username,
+        password: payload.signUp.password,
+        usertype: 'admin'
+      }
+      Axios.post('/signup', data, { 'Content-Type': 'application/json' }).then((result) => {
+        console.log(result);
+      })
     }
   }
 

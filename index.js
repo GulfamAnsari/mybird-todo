@@ -5,6 +5,10 @@ var fs = require('fs')
 cookieParser = require('cookie-parser');
 var cors = require('cors');
 
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const SECRET_KEY = "secretkey23456";
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -120,12 +124,20 @@ function writeIntoDabase(req, res, db) {
       var user = {
         name: req.body.username,
         email: req.body.email,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password),
         usertype: req.body.usertype
       }
       dbo.collection("login").insertOne(user, (err, response) => {
         if (err) throw err;
-        res.end(JSON.stringify(user));
+
+        const expiresIn = 24 * 60 * 60;
+        const accessToken = jwt.sign({ id: user.id }, SECRET_KEY, {
+          expiresIn: expiresIn
+        });
+        res.status(200).send({
+          "user": user, "access_token": accessToken, "expires_in": expiresIn
+        });
+        // res.end(JSON.stringify(user));
         console.log("1 record inserted");
         db.close();
       });
