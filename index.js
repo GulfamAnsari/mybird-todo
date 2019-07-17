@@ -83,8 +83,15 @@ function authenticateUser(req, dbResult, res) {
   }
   if (data) {
     var userInfo = userInformation(data)
-    console.log('successfully login')
-    res.end(JSON.stringify(userInfo));
+    console.log('successfully login');
+
+    const expiresIn = 24 * 60 * 60;
+    const accessToken = jwt.sign({ id: user.id }, SECRET_KEY, {
+      expiresIn: expiresIn
+    });
+
+    res.cookie('token', accessToken, { maxAge: expiresIn * 1000 })
+    res.end(JSON.stringify({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn }));
   } else {
     res.end(null);
     console.log('please check your email and password')
@@ -131,13 +138,15 @@ function writeIntoDabase(req, res, db) {
         if (err) throw err;
 
         const expiresIn = 24 * 60 * 60;
-        const accessToken = jwt.sign({ id: user.id }, SECRET_KEY, {
+        const accessToken = jwt.sign({ id: user._id }, SECRET_KEY, {
           expiresIn: expiresIn
         });
-        res.status(200).send({
+        
+        res.cookie('token', accessToken, { maxAge: expiresIn * 1000 });
+
+        res.end(JSON.stringify({
           "user": user, "access_token": accessToken, "expires_in": expiresIn
-        });
-        // res.end(JSON.stringify(user));
+        }));
         console.log("1 record inserted");
         db.close();
       });
