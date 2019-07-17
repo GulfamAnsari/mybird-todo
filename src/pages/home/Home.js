@@ -22,8 +22,8 @@ export default class Home extends Component {
     event.preventDefault();
     if (payload.name === 'sign-in') {
       const data = {
-        email: payload.singIn.username,
-        password: payload.singIn.password,
+        email: payload.signIn.username,
+        password: payload.signIn.password,
       }
       Axios.post('/login', data, { 'Content-Type': 'application/json' }).then((result) => {
         console.log(result);
