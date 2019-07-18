@@ -58,6 +58,7 @@ function connectMongoDB(req, res) {
   }
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
+    console.log(req.url);
     if (req.url == '/login') {
       fetchDatabaseResults(req, res, db)
     } else if (req.url == '/signup') {
