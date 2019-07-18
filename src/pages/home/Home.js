@@ -18,15 +18,16 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
-    // const token = this.getCookie('token');
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZ3VsZmFtIiwiZW1haWwiOiJndWxmYW1AcGF5dG0uY29tIiwiaWQiOiI1ZDJmMGIyYjhmZmNiMzAwMDQ4MDA3ODMiLCJ1c2VydHlwZSI6ImFkbWluIiwibG9naW5EYXRhIjoiVGh1IEp1bCAxOCAyMDE5IDA3OjE3OjE3IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSkiLCJpYXQiOjE1NjM0MzQyMzcsImV4cCI6MTU2MzUyMDYzN30.P8_n69i2TaFfKzjZfldDo9OrcLWyngrhwOIRBvFRzRE'
-    jwt.verify(token, 'secretkey23456', (err, decoded) => {
-      const now = Date.now().valueOf() / 1000;
-      if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
-      } else {
-        this.getUserData(decoded.email);
-      }
-    });
+    const token = this.getCookie('token');
+    if (token) {
+      jwt.verify(token, 'secretkey23456', (err, decoded) => {
+        const now = Date.now().valueOf() / 1000;
+        if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
+        } else {
+          this.getUserData(decoded.email);
+        }
+      });
+    }
   };
 
   getUserData(email) {

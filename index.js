@@ -100,7 +100,7 @@ function authenticateUser(req, dbResult, res) {
     });
 
     res.cookie('token', accessToken, { maxAge: expiresIn * 1000 })
-    res.end(JSON.stringify({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn }));
+    res.end({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn });
   } else {
     res.end(null);
     console.log('please check your email and password')
@@ -153,9 +153,9 @@ function writeIntoDabase(req, res, db) {
 
         res.cookie('token', accessToken, { maxAge: expiresIn * 1000 });
 
-        res.end(JSON.stringify({
+        res.end({
           "user": user, "access_token": accessToken, "expires_in": expiresIn
-        }));
+        });
         console.log("1 record inserted");
         db.close();
       });
