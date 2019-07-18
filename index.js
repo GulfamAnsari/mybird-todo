@@ -39,7 +39,7 @@ app.post('/signup', (req, res) => {
   connectMongoDB(req, res);
 });
 
-app.get('/get-data', (req, res) => {
+app.post('/get-data', (req, res) => {
   connectMongoDB(req, res);
 });
 
