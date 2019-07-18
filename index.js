@@ -177,13 +177,17 @@ function getData(req, res, db) {
   var dbo = db.db("amtica");
   dbo.collection("login").find({}).toArray((err, dbResult) => {
     if (err) throw err;
+    let data = {};
     for (var i = 0; i < dbResult.length; i++) {
+      console.log(dbResult[i], req.body.email)
       if (dbResult[i].email == req.body.email) {
-        res.end(JSON.stringify(dbResult[i]));
-        console.log("1 record inserted");
-        db.close();
+        data = dbResult[i];
+        break;
       }
     }
+    res.end(JSON.stringify(data);
+    console.log("fetcing data....");
+    db.close();
   });
 }
 
