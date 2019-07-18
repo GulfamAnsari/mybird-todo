@@ -33,7 +33,9 @@ class Home extends Component {
     console.log(email);
     // save user data into store and route to the todo route
     Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
+      console.log(result.data.tasks)
       const tasks = result.data.tasks;
+      console.log(tasks)
       this.props.fetchTasks(tasks);
       this.props.history.push({ pathname: '/todos' });
     })
@@ -58,7 +60,8 @@ class Home extends Component {
         email: payload.signUp.email,
         username: payload.signUp.username,
         password: payload.signUp.password,
-        usertype: 'admin'
+        usertype: 'admin',
+        tasks: []
       }
       this.gotoDashboard('/signup', data);
     }

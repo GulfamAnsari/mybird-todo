@@ -188,9 +188,9 @@ function sendData(req, res, db) {
       }
       dbo.collection("login").insertOne(user, (err, response) => {
         if (err) throw err;
-        res.end(JSON.stringify({
+        res.end({
           "user": user
-        }));
+        });
         console.log("1 record inserted");
         db.close();
       });
@@ -211,7 +211,7 @@ function getData(req, res, db) {
         break;
       }
     }
-    res.end(JSON.stringify(data));
+    res.end(data);
     console.log("fetcing data....");
     db.close();
   });
