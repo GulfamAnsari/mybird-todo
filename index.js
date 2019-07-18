@@ -100,9 +100,9 @@ function authenticateUser(req, dbResult, res) {
     });
 
     res.cookie('token', accessToken, { maxAge: expiresIn * 1000 })
-    res.end(JSON.stringify({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn }));
+    res.send(JSON.stringify({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn }));
   } else {
-    res.end(null);
+    res.send(null);
     console.log('please check your email and password')
   }
 }
@@ -135,7 +135,7 @@ function writeIntoDabase(req, res, db) {
       }
     }
     if (user) {
-      res.end(null);
+      res.send(null);
     } else {
       var user = {
         name: req.body.username,
@@ -153,7 +153,7 @@ function writeIntoDabase(req, res, db) {
 
         res.cookie('token', accessToken, { maxAge: expiresIn * 1000 });
 
-        res.end(JSON.stringify({
+        res.send(JSON.stringify({
           "user": user, "access_token": accessToken, "expires_in": expiresIn
         }));
         console.log("1 record inserted");
@@ -177,7 +177,7 @@ function sendData(req, res, db) {
       }
     }
     if (user) {
-      res.end(null);
+      res.send(null);
     } else {
       var user = {
         name: req.body.username,
@@ -188,7 +188,7 @@ function sendData(req, res, db) {
       }
       dbo.collection("login").insertOne(user, (err, response) => {
         if (err) throw err;
-        res.end(JSON.stringify({
+        res.send(JSON.stringify({
           "user": user
         }));
         console.log("1 record inserted");
@@ -211,7 +211,7 @@ function getData(req, res, db) {
         break;
       }
     }
-    res.end(JSON.stringify(data));
+    res.send(JSON.stringify(data));
     console.log("fetcing data....");
     db.close();
   });
@@ -222,7 +222,7 @@ function addPaper(req, res, db) {
   var dbo = db.db("amtica");
   dbo.collection("test").insertOne({ 'test': req.body }, (err, response) => {
     if (err) throw err;
-    res.end(JSON.stringify(req.body));
+    res.send(JSON.stringify(req.body));
     console.log("1 record inserted");
     db.close();
   });
@@ -264,7 +264,7 @@ function refresh(req, res) {
 
   // Set the new token as the users `token` cookie
   res.cookie('token', newToken, { maxAge: jwtExpirySeconds * 1000 })
-  res.end()
+  res.send()
 }
 
 
