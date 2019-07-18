@@ -25,8 +25,6 @@ export const fetchTasks = (value) => {
       type: 'FETCH_TASKS_DATA',
       value: value
     }
-    localForage.setItem('tasks', tasks).then((success) => {
-      dispatch(success);
-    });
+    dispatch(tasks);
   }
 }

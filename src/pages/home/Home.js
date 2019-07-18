@@ -35,7 +35,7 @@ class Home extends Component {
   getUserData(email) {
     Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
       const tasks = result.data.tasks;
-      this.props.fetchTasks(tasks);
+      this.props.fetchTasks({tasks: tasks, email: result.data.email});
       setTimeout(() => {
         this.props.history.push({ pathname: '/todos' });
       }, 1000);
@@ -115,7 +115,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchTasks: (tasks) => dispatch(actions.fetchTasks(tasks)),
+    fetchTasks: ({ tasks, email }) => dispatch(actions.fetchTasks({ tasks, email })),
   }
 }
 

@@ -169,26 +169,17 @@ function sendData(req, res, db) {
     if (err) throw err;
     for (var i = 0; i < dbResult.length; i++) {
       if (dbResult[i].email == req.body.email) {
-        var user = {
-          name: dbResult[i].username,
-          email: dbResult[i].email,
-          password: dbResult[i].password,
-          usertype: dbResult[i].usertype,
-          tasks: req.body.tasks
-        }
+        var myquery = { address: dbResult[i].tasks };
+        var newvalues = { $set: { address: req.body.tasks } };
+        dbo.collection("customers").updateOne(myquery, newvalues, (err, res) => {
+          if (err) throw err;
+          res.send(JSON.stringify(dbResult[i]));
+          console.log("1 record inserted");
+          db.close();
+        });
         break;
       }
     }
-
-    dbo.collection("login").insertOne(user, (err, response) => {
-      if (err) throw err;
-      res.send(JSON.stringify({
-        "user": user
-      }));
-      console.log("1 record inserted");
-      db.close();
-    });
-
     db.close();
   });
 }

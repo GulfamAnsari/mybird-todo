@@ -122,7 +122,7 @@ class Todo extends Component {
  * to fetch the application data.
  */
   componentDidMount = () => {
-    if (this.props.authState.isAuthenticated) {
+    if (this.props.authState.isAuthenticated || hlp.getCookie('token')) {
       const token = hlp.getCookie('token');
       if (token) {
         jwt.verify(token, 'secretkey23456', (err, decoded) => {
@@ -133,7 +133,6 @@ class Todo extends Component {
           }
         });
       }
-      // this.getUserData('gulfam@paytm.com');
     } else {
       Axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
         localForage.getItem('tasks').then((data) => {
@@ -164,7 +163,7 @@ class Todo extends Component {
   getUserData(email) {
     Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
       const tasks = result.data.tasks;
-      this.props.fetchTasks(tasks);
+      this.props.fetchTasks({ tasks: tasks, email: result.data.email });
     })
   }
 
@@ -180,7 +179,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateTasks: (tasks) => dispatch(actions.updateTask(tasks)),
-    fetchTasks: (tasks) => dispatch(actions.fetchTasks(tasks))
+    fetchTasks: ({ tasks, email }) => dispatch(actions.fetchTasks({ tasks, email })),
   }
 }
 

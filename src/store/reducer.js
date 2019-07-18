@@ -9,21 +9,18 @@ const initialState = {
 }
 
 const Reducer = (state = initialState, action) => {
-  const taskState = {};
   switch (action.type) {
     case 'UPDATE_TASK':
-      taskState['tasks'] = action.value;
-      taskState['openNewTodo'] = false;
       return {
         ...state,
-        taskState: taskState
+        taskState: { tasks: action.value, openNewTodo: false }
       }
 
     case 'FETCH_TASKS_DATA':
       return {
         ...state,
-        taskState: { tasks: action.value },
-        authState: { isAuthenticated: true }
+        taskState: { tasks: action.value.tasks },
+        authState: { isAuthenticated: true, email: action.value.email }
       }
 
     default:
