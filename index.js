@@ -185,7 +185,7 @@ function getData(req, res, db) {
         break;
       }
     }
-    res.end(JSON.stringify(data);
+    res.end(JSON.stringify(data));
     console.log("fetcing data....");
     db.close();
   });
