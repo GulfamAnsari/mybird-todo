@@ -18,6 +18,15 @@ const Reducer = (state = initialState, action) => {
         taskState: taskState
       }
 
+    case 'FETCH_TASKS_DATA':
+      taskState['tasks'] = action.value;
+      taskState['openNewTodo'] = false;
+      return {
+        ...state,
+        taskState: taskState,
+        authState: { isAuthenticated: true }
+      }
+
     default:
       return state;
   }

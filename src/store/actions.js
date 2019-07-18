@@ -11,3 +11,15 @@ export const updateTask = (value) => {
     });
   }
 }
+
+export const fetchTasks = (value) => {
+  return (dispatch) => {
+    const tasks = {
+      type: 'FETCH_TASKS_DATA',
+      value: value
+    }
+    localForage.setItem('tasks', tasks).then((success) => {
+      dispatch(success);
+    });
+  }
+}

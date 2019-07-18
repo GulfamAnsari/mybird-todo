@@ -38,6 +38,15 @@ app.post('/refresh', (req, res) => {
 app.post('/signup', (req, res) => {
   connectMongoDB(req, res);
 });
+
+app.get('/get-data', (req, res) => {
+  connectMongoDB(req, res);
+});
+
+app.post('/send-data', (req, res) => {
+  connectMongoDB(req, res);
+});
+
 // ******end ******
 
 function connectMongoDB(req, res) {
@@ -53,8 +62,10 @@ function connectMongoDB(req, res) {
       fetchDatabaseResults(req, res, db)
     } else if (req.url == '/signup') {
       writeIntoDabase(req, res, db)
-    } else if (req.url == '/test-paper' && req.method == 'POST') {
-      addPaper(req, res, db)
+    } else if (req.url == '/get-data' && req.method == 'GET') {
+      getData(req, res, db)
+    } else if (req.url == '/send-data' && req.method == 'POST') {
+      sendData(req, res, db)
     }
     else if (req.url == '/test-paper' && req.method == 'GET') {
       fetchTests(req, res, db)
@@ -152,6 +163,29 @@ function writeIntoDabase(req, res, db) {
   });
 }
 
+function sendData(req, res, db) {
+  var dbo = db.db("amtica");
+  dbo.collection("test").insertOne({ 'tasks': req.body }, (err, response) => {
+    if (err) throw err;
+    res.end(JSON.stringify(req.body));
+    console.log("1 record inserted");
+    db.close();
+  });
+}
+
+function getData(req, res, db) {
+  var dbo = db.db("amtica");
+  dbo.collection("login").find({}).toArray((err, dbResult) => {
+    if (err) throw err;
+    for (var i = 0; i < dbResult.length; i++) {
+      if (dbResult[i].email == req.body.email) {
+        res.end(JSON.stringify(dbResult[i]));
+        console.log("1 record inserted");
+        db.close();
+      }
+    }
+  });
+}
 
 //adding paper test
 function addPaper(req, res, db) {
