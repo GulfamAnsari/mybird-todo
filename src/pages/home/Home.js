@@ -32,7 +32,7 @@ class Home extends Component {
   getUserData(email) {
     console.log(email);
     // save user data into store and route to the todo route
-    Axios.get('https://mybird-todo.herokuapp.com/get-data', { 'Content-Type': 'application/json' }).then((result) => {
+    Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
       const tasks = result.data.tasks;
       this.props.fetchTasks(tasks);
       this.props.history.push({ pathname: '/todos' });

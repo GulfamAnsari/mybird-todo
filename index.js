@@ -62,7 +62,7 @@ function connectMongoDB(req, res) {
       fetchDatabaseResults(req, res, db)
     } else if (req.url == '/signup') {
       writeIntoDabase(req, res, db)
-    } else if (req.url == '/get-data' && req.method == 'GET') {
+    } else if (req.url == '/get-data' && req.method == 'POST') {
       getData(req, res, db)
     } else if (req.url == '/send-data' && req.method == 'POST') {
       sendData(req, res, db)
