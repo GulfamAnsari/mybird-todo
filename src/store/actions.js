@@ -1,14 +1,21 @@
 import localForage from 'localforage';
+import Axios from 'axios';
 
 export const updateTask = (value) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const tasks = {
       type: 'UPDATE_TASK',
       value: value
     }
-    localForage.setItem('tasks', tasks).then((success) => {
-      dispatch(success);
-    });
+    if (getState().authState.isAuthenticated) {
+      Axios.post('https://mybird-todo.herokuapp.com/send-data', value, { 'Content-Type': 'application/json' }).then((result) => {
+        dispatch(tasks);
+      });
+    } else {
+      localForage.setItem('tasks', tasks).then((success) => {
+        dispatch(success);
+      });
+    }
   }
 }
 

@@ -5,6 +5,7 @@ import Axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
+import * as hlp from '../../helper/helper-functions';
 
 
 class Home extends Component {
@@ -18,7 +19,7 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
-    const token = this.getCookie('token');
+    const token = hlp.getCookie('token');
     if (token) {
       jwt.verify(token, 'secretkey23456', (err, decoded) => {
         const now = Date.now().valueOf() / 1000;
@@ -28,18 +29,22 @@ class Home extends Component {
         }
       });
     }
+    this.getUserData('gulfam@paytm.com');
   };
 
   getUserData(email) {
-    console.log(email);
-    // save user data into store and route to the todo route
     Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
-      console.log(result.data.tasks)
       const tasks = result.data.tasks;
-      console.log(tasks)
       this.props.fetchTasks(tasks);
-      this.props.history.push({ pathname: '/todos' });
+      setTimeout(() => {
+        this.props.history.push({ pathname: '/todos' });
+      }, 1000);
     })
+    // const tasks = [{ title: 'abc', 'priority': 'high' }];
+    // this.props.fetchTasks(tasks);
+    // setTimeout(() => {
+    //   this.props.history.push({ pathname: '/todos' });
+    // }, 1000);
   }
 
   formSelectionHanndler(event) {
@@ -104,21 +109,6 @@ class Home extends Component {
     )
   }
 
-  getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
 }
 
 

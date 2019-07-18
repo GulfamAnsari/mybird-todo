@@ -6,6 +6,7 @@ import Axios from 'axios';
 import { connect } from 'react-redux';
 import localForage from 'localforage';
 import * as actions from '../../store/actions';
+import * as hlp from '../../helper/helper-functions';
 
 class Todo extends Component {
 
@@ -120,42 +121,67 @@ class Todo extends Component {
  * to fetch the application data.
  */
   componentDidMount = () => {
-    Axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
-      localForage.getItem('tasks').then((data) => {
-        if (data) {
-          this.props.updateTasks(data.value);
-          return;
-        }
-      })
-      const updatedResponse = response.data.slice(1, 10);
-      const tasks = [];
-      updatedResponse.map((result, index) => {
-        // for better UI
-        const priority = ['Medium', 'High', 'Medium', 'High', 'Low', 'Medium', 'High', 'Low', 'Medium', 'High'];
-        const completed = [true, false, true, true, false, true, false, false, false, false];
-        /***/
-        tasks.push({
-          title: result.title,
-          description: result.body,
-          completed: completed[index],
-          priority: priority[index]
+    if (this.props.authState.isAuthenticated) {
+      const token = hlp.getCookie('token');
+      if (token) {
+        jwt.verify(token, 'secretkey23456', (err, decoded) => {
+          const now = Date.now().valueOf() / 1000;
+          if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
+          } else {
+            this.getUserData(decoded.email);
+          }
         });
+      }
+      // this.getUserData('gulfam@paytm.com');
+    } else {
+      Axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
+        localForage.getItem('tasks').then((data) => {
+          if (data) {
+            this.props.updateTasks(data.value);
+            return;
+          }
+        })
+        const updatedResponse = response.data.slice(1, 10);
+        const tasks = [];
+        updatedResponse.map((result, index) => {
+          // for better UI
+          const priority = ['Medium', 'High', 'Medium', 'High', 'Low', 'Medium', 'High', 'Low', 'Medium', 'High'];
+          const completed = [true, false, true, true, false, true, false, false, false, false];
+          /***/
+          tasks.push({
+            title: result.title,
+            description: result.body,
+            completed: completed[index],
+            priority: priority[index]
+          });
+        });
+        this.props.updateTasks(tasks);
       });
-      this.props.updateTasks(tasks);
-    });
-  };
+    };
+  }
+
+  getUserData(email) {
+    Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
+      const tasks = result.data.tasks;
+      this.props.fetchTasks(tasks);
+    })
+    // const tasks = [{ title: 'abc', 'priority': 'high' }];
+    // this.props.fetchTasks(tasks);
+  }
 
 }
 
 const mapStateToProps = (state) => {
   return {
-    taskState: state.taskState
+    taskState: state.taskState,
+    authState: state.authState
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     updateTasks: (tasks) => dispatch(actions.updateTask(tasks)),
+    fetchTasks: (tasks) => dispatch(actions.fetchTasks(tasks))
   }
 }
 
