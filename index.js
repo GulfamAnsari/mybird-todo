@@ -169,7 +169,7 @@ function sendData(req, res, db) {
     if (err) throw err;
     for (var i = 0; i < dbResult.length; i++) {
       if (dbResult[i].email == req.body.email) {
-        var myquery = { address: dbResult[i].tasks };
+        var myquery = { _id : dbResult[i]._id };
         var newvalues = { $set: { address: req.body.tasks } };
         dbo.collection("login").updateOne(myquery, newvalues, (err, result) => {
           if (err) throw err;
