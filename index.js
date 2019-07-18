@@ -171,9 +171,10 @@ function sendData(req, res, db) {
       if (dbResult[i].email == req.body.email) {
         var myquery = { _id : dbResult[i]._id };
         var newvalues = { $set: { address: req.body.tasks } };
-        dbo.collection("login").updateOne(myquery, newvalues, (err, result) => {
+        dbo.collection("login").update(myquery, newvalues, (err, result) => {
           if (err) throw err;
           res.send(JSON.stringify(dbResult[i]));
+          console.log(result)
           console.log("1 record inserted");
           db.close();
         });
