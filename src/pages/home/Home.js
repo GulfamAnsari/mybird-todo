@@ -52,7 +52,7 @@ class Home extends Component {
         email: payload.signIn.username,
         password: payload.signIn.password,
       }
-      this.gotoDashboard('/login');
+      this.gotoDashboard('/login', data);
     } else if (payload.name === 'sign-up') {
       const data = {
         email: payload.signUp.email,
@@ -60,7 +60,7 @@ class Home extends Component {
         password: payload.signUp.password,
         usertype: 'admin'
       }
-      this.gotoDashboard('/signup');
+      this.gotoDashboard('/signup', data);
     }
   }
 

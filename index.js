@@ -62,12 +62,12 @@ function connectMongoDB(req, res) {
       fetchDatabaseResults(req, res, db)
     } else if (req.url == '/signup') {
       writeIntoDabase(req, res, db)
-    } else if (req.url == '/get-data' && req.method == 'POST') {
+    } else if (req.url == '/get-data') {
       getData(req, res, db)
-    } else if (req.url == '/send-data' && req.method == 'POST') {
+    } else if (req.url == '/send-data') {
       sendData(req, res, db)
     }
-    else if (req.url == '/test-paper' && req.method == 'GET') {
+    else if (req.url == '/test-paper') {
       fetchTests(req, res, db)
     }
   });
