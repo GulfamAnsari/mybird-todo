@@ -100,7 +100,7 @@ function authenticateUser(req, dbResult, res) {
     });
 
     res.cookie('token', accessToken, { maxAge: expiresIn * 1000 })
-    res.end({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn });
+    res.end(JSON.stringify({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn }));
   } else {
     res.end(null);
     console.log('please check your email and password')
@@ -153,9 +153,9 @@ function writeIntoDabase(req, res, db) {
 
         res.cookie('token', accessToken, { maxAge: expiresIn * 1000 });
 
-        res.end({
+        res.end(JSON.stringify({
           "user": user, "access_token": accessToken, "expires_in": expiresIn
-        });
+        }));
         console.log("1 record inserted");
         db.close();
       });
@@ -188,9 +188,9 @@ function sendData(req, res, db) {
       }
       dbo.collection("login").insertOne(user, (err, response) => {
         if (err) throw err;
-        res.end({
+        res.end(JSON.stringify({
           "user": user
-        });
+        }));
         console.log("1 record inserted");
         db.close();
       });
@@ -211,7 +211,7 @@ function getData(req, res, db) {
         break;
       }
     }
-    res.end(data);
+    res.end(JSON.stringify(data));
     console.log("fetcing data....");
     db.close();
   });

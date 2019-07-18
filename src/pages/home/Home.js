@@ -34,7 +34,7 @@ class Home extends Component {
 
   getUserData(email) {
     Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
-      const tasks = result.data.tasks;
+      const tasks = JSON.parse(result.data)['tasks'];
       this.props.fetchTasks(tasks);
       setTimeout(() => {
         this.props.history.push({ pathname: '/todos' });
@@ -76,7 +76,7 @@ class Home extends Component {
   gotoDashboard(url, data) {
     Axios.post('https://mybird-todo.herokuapp.com' + url, data, { 'Content-Type': 'application/json' }).then((result) => {
       if (result.data) {
-        this.getUserData(result.data.email);
+        this.getUserData(JSON.parse(result.data)['email']);
       } else if (!result.data && url === '/signup') {
         this.setState({
           error: 'User Already Exists.'
