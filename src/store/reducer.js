@@ -3,7 +3,8 @@ const initialState = {
     tasks: []
   },
   authState: {
-    isAuthenticated: false
+    isAuthenticated: false,
+    email: ''
   }
 }
 
