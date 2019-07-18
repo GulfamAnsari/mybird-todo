@@ -165,10 +165,35 @@ function writeIntoDabase(req, res, db) {
 
 function sendData(req, res, db) {
   var dbo = db.db("amtica");
-  dbo.collection("test").insertOne({ 'tasks': req.body }, (err, response) => {
+  dbo.collection("login").find({}).toArray((err, dbResult) => {
     if (err) throw err;
-    res.end(JSON.stringify(req.body));
-    console.log("1 record inserted");
+    var user = false;
+    for (var i = 0; i < dbResult.length; i++) {
+      if (dbResult[i].email == req.body.email) {
+        console.log('user already exists');
+        user = true;
+        break;
+      }
+    }
+    if (user) {
+      res.end(null);
+    } else {
+      var user = {
+        name: req.body.username,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password),
+        usertype: req.body.usertype,
+        tasks: req.body.tasks
+      }
+      dbo.collection("login").insertOne(user, (err, response) => {
+        if (err) throw err;
+        res.end(JSON.stringify({
+          "user": user
+        }));
+        console.log("1 record inserted");
+        db.close();
+      });
+    }
     db.close();
   });
 }
