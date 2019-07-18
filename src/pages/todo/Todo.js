@@ -166,8 +166,6 @@ class Todo extends Component {
       const tasks = result.data.tasks;
       this.props.fetchTasks(tasks);
     })
-    // const tasks = [{ title: 'abc', 'priority': 'high' }];
-    // this.props.fetchTasks(tasks);
   }
 
 }

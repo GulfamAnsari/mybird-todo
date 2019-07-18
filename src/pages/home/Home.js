@@ -40,11 +40,6 @@ class Home extends Component {
         this.props.history.push({ pathname: '/todos' });
       }, 1000);
     })
-    // const tasks = [{ title: 'abc', 'priority': 'high' }];
-    // this.props.fetchTasks(tasks);
-    // setTimeout(() => {
-    //   this.props.history.push({ pathname: '/todos' });
-    // }, 1000);
   }
 
   formSelectionHanndler(event) {
@@ -75,6 +70,7 @@ class Home extends Component {
   gotoDashboard(url, data) {
     Axios.post('https://mybird-todo.herokuapp.com' + url, data, { 'Content-Type': 'application/json' }).then((result) => {
       if (result.data) {
+        hlp.setCookie('token', result.data['access_token'], result.data['expires_in']);
         this.getUserData(result.data.user.email);
       } else if (!result.data && url === '/signup') {
         this.setState({

@@ -152,8 +152,6 @@ function writeIntoDabase(req, res, db) {
           expiresIn: expiresIn
         });
 
-        res.cookie('token', accessToken, { maxAge: expiresIn * 1000 });
-
         res.send(JSON.stringify({
           "user": user, "access_token": accessToken, "expires_in": expiresIn
         }));
@@ -169,33 +167,28 @@ function sendData(req, res, db) {
   var dbo = db.db("amtica");
   dbo.collection("login").find({}).toArray((err, dbResult) => {
     if (err) throw err;
-    var user = false;
     for (var i = 0; i < dbResult.length; i++) {
       if (dbResult[i].email == req.body.email) {
-        console.log('user already exists');
-        user = true;
+        var user = {
+          name: dbResult[i].username,
+          email: dbResult[i].email,
+          password: dbResult[i].password,
+          usertype: dbResult[i].usertype,
+          tasks: req.body.tasks
+        }
         break;
       }
     }
-    if (user) {
-      res.send(null);
-    } else {
-      var user = {
-        name: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password),
-        usertype: req.body.usertype,
-        tasks: req.body.tasks
-      }
-      dbo.collection("login").insertOne(user, (err, response) => {
-        if (err) throw err;
-        res.send(JSON.stringify({
-          "user": user
-        }));
-        console.log("1 record inserted");
-        db.close();
-      });
-    }
+
+    dbo.collection("login").insertOne(user, (err, response) => {
+      if (err) throw err;
+      res.send(JSON.stringify({
+        "user": user
+      }));
+      console.log("1 record inserted");
+      db.close();
+    });
+
     db.close();
   });
 }
