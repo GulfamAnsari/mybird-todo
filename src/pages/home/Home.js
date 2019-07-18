@@ -66,8 +66,7 @@ class Home extends Component {
         email: payload.signUp.email,
         username: payload.signUp.username,
         password: payload.signUp.password,
-        usertype: 'admin',
-        tasks: []
+        usertype: 'admin'
       }
       this.gotoDashboard('/signup', data);
     }

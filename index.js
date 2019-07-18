@@ -141,7 +141,8 @@ function writeIntoDabase(req, res, db) {
         name: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),
-        usertype: req.body.usertype
+        usertype: req.body.usertype,
+        tasks: []
       }
       dbo.collection("login").insertOne(user, (err, response) => {
         if (err) throw err;
@@ -205,7 +206,6 @@ function getData(req, res, db) {
     if (err) throw err;
     let data = {};
     for (var i = 0; i < dbResult.length; i++) {
-      console.log(dbResult[i], req.body.email)
       if (dbResult[i].email == req.body.email) {
         data = dbResult[i];
         break;
