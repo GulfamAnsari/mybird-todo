@@ -3,6 +3,7 @@ import AddTask from '../../components/add-task/AddTask';
 import CompletedTask from '../../components/completed-task/CompletedTask';
 import Task from '../../components/tasks/Task';
 import Axios from 'axios';
+import jwt from 'jsonwebtoken';
 import { connect } from 'react-redux';
 import localForage from 'localforage';
 import * as actions from '../../store/actions';
