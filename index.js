@@ -170,7 +170,7 @@ function sendData(req, res, db) {
     for (var i = 0; i < dbResult.length; i++) {
       if (dbResult[i].email == req.body.email) {
         var myquery = { _id : dbResult[i]._id };
-        var newvalues = { $set: { address: req.body.tasks } };
+        var newvalues = { $set: { tasks: req.body.tasks } };
         dbo.collection("login").update(myquery, newvalues, (err, result) => {
           if (err) throw err;
           res.send(JSON.stringify(dbResult[i]));
