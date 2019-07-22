@@ -39,7 +39,8 @@ function Task(props) {
           <span className="title">{task.title} </span></h3>
         <p className="todo-description">
           {task.description} </p>
-        <span className="todo-priority"> {task.priority} </span>
+        <span className="todo-priority"> {task.priority}</span>
+        <span className="time">{task.time}</span>
       </div>
     </li>
   )

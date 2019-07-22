@@ -12,6 +12,7 @@ export default function AddTask({ openNewTodo, toggleTodoHandler, addNewTodoHand
 
   function onSubmitHandler(event) {
     event.preventDefault();
+    formData['time'] = new Date().toLocaleString();
     addNewTodoHandler(formData);
   }
 
