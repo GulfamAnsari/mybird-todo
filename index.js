@@ -94,7 +94,7 @@ function authenticateUser(req, dbResult, res) {
     var userInfo = userInformation(data)
     console.log('successfully login');
 
-    const expiresIn = 60 * 60; //expire token after 1 minute
+    const expiresIn = 60; //expire token after 1 minute
     const accessToken = jwt.sign(userInfo, SECRET_KEY, {
       expiresIn: expiresIn
     });
