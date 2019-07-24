@@ -4,6 +4,7 @@ var app = express();
 var fs = require('fs')
 cookieParser = require('cookie-parser');
 var cors = require('cors');
+var path = require('path');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -15,13 +16,13 @@ app.use(cors());
 
 // serving angular files
 app.use(express.static('build'));
-app.get('/', (req, response) => {
-  fs.readFile("build/index.html", (err, data) => {
-    response.writeHead(200, { 'Content-Type': 'text/html' });
-    response.write(data);
-    response.end(data);
-  });
-});
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build/index.html'), function (err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 const PORT = process.env.PORT || 4000;
 var MongoClient = require('mongodb').MongoClient;
@@ -168,7 +169,7 @@ function sendData(req, res, db) {
     if (err) throw err;
     for (var i = 0; i < dbResult.length; i++) {
       if (dbResult[i].email == req.body.email) {
-        var myquery = { _id : dbResult[i]._id };
+        var myquery = { _id: dbResult[i]._id };
         var newvalues = { $set: { tasks: req.body.tasks } };
         dbo.collection("login").update(myquery, newvalues, (err, result) => {
           if (err) throw err;
