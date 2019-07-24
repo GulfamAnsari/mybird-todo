@@ -146,7 +146,7 @@ function writeIntoDabase(req, res, db) {
       dbo.collection("login").insertOne(user, (err, response) => {
         if (err) throw err;
 
-        const expiresIn = 24 * 60 * 60;
+        const expiresIn = 7 * 24 * 60 * 60;
         const accessToken = jwt.sign(user, SECRET_KEY, {
           expiresIn: expiresIn
         });
