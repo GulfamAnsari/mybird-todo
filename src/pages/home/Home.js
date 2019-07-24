@@ -22,20 +22,17 @@ class Home extends Component {
     const token = hlp.getCookie('token');
     if (token) {
       jwt.verify(token, 'secretkey23456', (err, decoded) => {
-        const now = Date.now().valueOf() / 1000;
-        if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
-        } else {
+        if (decoded) {
           this.getUserData(decoded.email);
         }
       });
     }
-    // this.getUserData('gulfam@paytm.com');
   };
 
   getUserData(email) {
     Axios.post('https://mybird-todo.herokuapp.com/get-data', { email: email }, { 'Content-Type': 'application/json' }).then((result) => {
       const tasks = result.data.tasks;
-      this.props.fetchTasks({tasks: tasks, email: result.data.email});
+      this.props.fetchTasks({ tasks: tasks, email: result.data.email });
       setTimeout(() => {
         this.props.history.push({ pathname: '/todos' });
       }, 1000);
