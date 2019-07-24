@@ -94,12 +94,11 @@ function authenticateUser(req, dbResult, res) {
     var userInfo = userInformation(data)
     console.log('successfully login');
 
-    const expiresIn = 24 * 60 * 60;
+    const expiresIn = 60 * 60; //expire token after 1 minute
     const accessToken = jwt.sign(userInfo, SECRET_KEY, {
       expiresIn: expiresIn
     });
 
-    res.cookie('token', accessToken, { maxAge: expiresIn * 1000 })
     res.send(JSON.stringify({ "user": userInfo, "access_token": accessToken, "expires_in": expiresIn }));
   } else {
     res.send(null);
