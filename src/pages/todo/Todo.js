@@ -126,9 +126,7 @@ class Todo extends Component {
       const token = hlp.getCookie('token');
       if (token) {
         jwt.verify(token, 'secretkey23456', (err, decoded) => {
-          const now = Date.now().valueOf() / 1000;
-          if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
-          } else {
+          if (decoded) {
             this.getUserData(decoded.email);
           }
         });
